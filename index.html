@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    #container {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #panzoom-area {
+      touch-action: none;
+    }
+
+    video {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="panzoom-area">
+      <video src="https://s3.eu-central-2.wasabisys.com/athlon-videos/123.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=8PZ8XDVC9KPSF9VCFGBT%2F20250626%2Feu-central-2%2Fs3%2Faws4_request&X-Amz-Date=20250626T153236Z&X-Amz-Expires=7200&X-Amz-Signature=c96d0cda658cfe6466b7524b0fbc4c4c9150f1cdd1187bf1e6afadada34eaa1b&X-Amz-SignedHeaders=host&x-id=GetObject" controls playsinline></video>
+    </div>
+  </div>
+
+  <!-- Load panzoom from CDN -->
+  <script src="https://unpkg.com/@panzoom/panzoom@9.4.0/dist/panzoom.min.js"></script>
+  <script>
+    const elem = document.getElementById('panzoom-area');
+    const panzoom = Panzoom(elem, {
+      maxScale: 5,
+      minScale: 1,
+      contain: 'outside',
+      startScale: 1,
+    });
+
+    // Enable wheel zoom
+    elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel);
+
+    // Enable iOS pinch gestures
+    elem.addEventListener('touchstart', panzoom.handleTouch);
+    elem.addEventListener('touchmove', panzoom.handleTouch);
+    elem.addEventListener('touchend', panzoom.handleTouch);
+  </script>
+</body>
+</html>
